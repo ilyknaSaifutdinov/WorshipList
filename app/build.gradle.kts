@@ -44,7 +44,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation ("org.jsoup:jsoup:1.13.1")
     implementation ("androidx.room:room-ktx:2.6.1")
-    implementation ("androidx.room:room-compiler:2.6.1")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     testImplementation("junit:junit:4.13.2")

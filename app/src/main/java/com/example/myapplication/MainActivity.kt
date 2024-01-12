@@ -2,6 +2,8 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.room.SongDB
@@ -13,8 +15,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        init()
 
         val songsList: RecyclerView
         val songsAdapter: SongsAdapter
@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         songsAdapter = SongsAdapter(30)
         songsList.adapter = songsAdapter
+
+        init()
 
     }
 
@@ -43,16 +45,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSong(){
-        var i = 1
         var doc : Document
-        val db = SongDB.getDB(this)
-        db.getDao()
-        while (i < 5){
-            doc = Jsoup.connect("https://holychords.pro/$i").get()
+       /* val db = SongDB.getDB(this)
+        db.getDao()*/
+            doc = Jsoup.connect("https://holychords.pro/57").get()
             val textSong : Elements = doc.getElementsByTag("pre")
-            textSong.get(1).text()
-            db.getDao().insertItem(textSong)
-            i++
-        }
+        Log.d("MyTag", textSong.get(1).text())
     }
 }

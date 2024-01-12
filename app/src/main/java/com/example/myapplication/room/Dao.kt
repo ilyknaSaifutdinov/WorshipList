@@ -9,7 +9,7 @@ import org.jsoup.select.Elements
 @Dao
 interface Dao {
     @Insert
-    fun insertItem(songEntity: Elements)
+    fun insertItem()
     @Query("SELECT * FROM SONGS")
     fun getAllSongs(): Flow<List<SongEntity>>
 }
