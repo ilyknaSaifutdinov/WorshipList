@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">RecyclerViewTestApp</string>
+    <string name="helper_text">Название песни</string>
+</resources>
