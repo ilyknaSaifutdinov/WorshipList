@@ -13,7 +13,7 @@ abstract class SongDB : RoomDatabase() {
     companion object{
         fun getDB(context: Context): SongDB {
             return Room.databaseBuilder(
-                context.applicationContext,
+                context,
                 SongDB::class.java,
                 "song.db"
             ).build()

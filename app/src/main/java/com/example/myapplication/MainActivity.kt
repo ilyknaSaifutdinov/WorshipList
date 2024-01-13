@@ -45,11 +45,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSong(){
+        val db = SongDB.getDB(this)
         var doc : Document
-       /* val db = SongDB.getDB(this)
-        db.getDao()*/
-            doc = Jsoup.connect("https://holychords.pro/57").get()
-            val textSong : Elements = doc.getElementsByTag("pre")
+        db.getDao()
+        doc = Jsoup.connect("https://holychords.pro/57").get()
+        val textSong : Elements = doc.getElementsByTag("pre")
         Log.d("MyTag", textSong.get(1).text())
     }
 }
