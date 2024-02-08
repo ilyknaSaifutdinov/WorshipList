@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/Primary_100"
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -24,6 +25,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songList"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
