@@ -58,17 +58,18 @@ dependencies {
 
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
-    implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha04")
+    implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha05")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha02")
 
     implementation ("org.jsoup:jsoup:1.17.2")
 
     implementation ("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation ("androidx.room:room-runtime:2.6.1")
     kapt ("androidx.room:room-compiler:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
 
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     kapt ("androidx.lifecycle:lifecycle-compiler:2.7.0")
 
     testImplementation("junit:junit:4.13.2")

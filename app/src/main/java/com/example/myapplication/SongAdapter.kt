@@ -37,9 +37,9 @@ class SongsAdapter() :
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        val songsIDTV : TextView = itemView.findViewById(R.id.songsIDTV)
-        val songsNameTV : TextView = itemView.findViewById(R.id.songsNameTV)
-        val authorTV : TextView = itemView.findViewById(R.id.author_tv)
+        private var songsIDTV : TextView = itemView.findViewById(R.id.songsIDTV)
+        private var songsNameTV : TextView = itemView.findViewById(R.id.songsNameTV)
+        private var authorTV : TextView = itemView.findViewById(R.id.author_tv)
 
         fun bind(data: Song) {
             songsIDTV.text = data.id.toString()

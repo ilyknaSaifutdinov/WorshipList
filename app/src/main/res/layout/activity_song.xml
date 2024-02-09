@@ -10,12 +10,12 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/white"
+        android:background="@color/Primary_100"
         app:title="Славь душа, Господа"
         app:subtitle="Слово Жизни Music"
-        app:titleTextColor="@color/black"
+        app:titleTextColor="@color/Primary_1000"
         app:menu="@menu/menu_song"
-        app:navigationIconTint="@color/black"
+        app:navigationIconTint="@color/Primary_1000"
         app:navigationIcon="@drawable/rounded_arrow_back_24" />
 
     <ScrollView
@@ -26,7 +26,7 @@
             android:id="@+id/textSong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/Primary_1000"
             android:textSize="12sp"/>
 
     </ScrollView>

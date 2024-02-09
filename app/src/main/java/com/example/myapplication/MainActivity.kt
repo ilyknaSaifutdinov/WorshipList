@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.room.Song
 import com.example.myapplication.room.SongDB
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ const val CLASS_AUTHOR_SONG = "text-white d-block d-sm-inline"
 
 val songIds = listOf(57, 16936, 10211, 1798, 39684, 5898, 3, 2606, 2641, 37, 3297,
     5967, 938, 43704)
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun getSong() = GlobalScope.launch(Dispatchers.IO) {
-        val db = SongDB.getDB(applicationContext)
+        val db = SongDB.createDataBase(applicationContext)
 
         songIds.forEach { id ->
             try {
@@ -53,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun requestSite() {
         GlobalScope.launch(Dispatchers.Main) {
             getSong()

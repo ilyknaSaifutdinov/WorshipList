@@ -11,7 +11,7 @@ abstract class SongDB : RoomDatabase() {
     abstract fun getDao() : Dao
 
     companion object{
-        fun getDB(context: Context): SongDB {
+        fun createDataBase(context: Context): SongDB {
             return Room.databaseBuilder(
                 context,
                 SongDB::class.java,

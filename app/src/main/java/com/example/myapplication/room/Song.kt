@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 @Entity (tableName = "songs")
 data class Song(
     @PrimaryKey(autoGenerate = true)
-    var id : Int? = null,
+    val id : Int? = null,
     @ColumnInfo(name = "name")
-    var songName : String,
+    val songName : String,
     @ColumnInfo(name = "author")
-    var songAuthor : String,
+    val songAuthor : String,
     @ColumnInfo(name = "text")
-    var songText : String
+    val songText : String
 )
