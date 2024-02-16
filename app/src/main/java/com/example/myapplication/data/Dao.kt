@@ -9,8 +9,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface Dao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSongs(song: Song)
-    @Query("SELECT * FROM songs")
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertSongs(songs: List<Song>)
+    @Query("SELECT * FROM song")
     fun getAllSongs(): List<Song>
+    @Query("SELECT * FROM song WHERE name || author LIKE '%' || :search || '%'")
+    suspend fun getAllSongsBySearching(search: String): List<Song>
+    @Query("SELECT * FROM song WHERE name LIKE :nameSong")
+    suspend fun getSongByName(nameSong: String): Song
+    @Query("DELETE FROM song")
+    fun deleteAllSongs()
 }

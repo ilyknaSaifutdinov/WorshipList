@@ -15,7 +15,7 @@ abstract class SongDB : RoomDatabase() {
             return Room.databaseBuilder(
                 context,
                 SongDB::class.java,
-                "song.db"
+                "songs.db"
             ).build()
         }
     }

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_error_report"
         android:orderInCategory="1"
         android:title="Сообщить об ошибке"/>
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_heart"
+        app:showAsAction="ifRoom"
+        android:onClick="addToFavorites"
+        android:title="@string/favorit" />
 </menu>

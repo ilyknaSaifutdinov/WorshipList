@@ -7,28 +7,39 @@
     android:orientation="vertical"
     tools:context=".SongActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/Primary_100"
-        app:title="Славь душа, Господа"
-        app:subtitle="Слово Жизни Music"
-        app:titleTextColor="@color/Primary_1000"
-        app:menu="@menu/menu_song"
-        app:navigationIconTint="@color/Primary_1000"
-        app:navigationIcon="@drawable/rounded_arrow_back_24" />
+        android:layout_height="wrap_content">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textSong"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="@color/Primary_1000"
-            android:textSize="12sp"/>
+            android:layout_height="60dp"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@color/Primary_100"
+            style="?appBarLayoutStyle"
+            app:title="Славь душа, Господа"
+            app:subtitle="Слово Жизни Music"
+            app:titleTextColor="@color/Primary_1000"
+            app:menu="@menu/menu_song"
+            app:navigationIconTint="@color/Primary_1000"
+            app:navigationIcon="@drawable/rounded_arrow_back_24" />
 
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Primary_100"
+                android:padding="16dp"
+                android:text="@string/text"
+                android:textColor="@color/Primary_1000"
+                android:textSize="16sp" />
+
+        </ScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
 </LinearLayout>
