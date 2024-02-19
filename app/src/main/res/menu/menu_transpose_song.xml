@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/C"
+        android:title="@string/tonC" />
+    <item android:id="@+id/C_D"
+        android:title="@string/tonC_D" />
+    <item android:id="@+id/D"
+        android:title="@string/tonD" />
+    <item android:id="@+id/D_E"
+        android:title="@string/tonD_E" />
+    <item android:id="@+id/E"
+        android:title="@string/tonE" />
+    <item android:id="@+id/F"
+        android:title="@string/tonF" />
+    <item android:id="@+id/F_G"
+        android:title="@string/tonF_G" />
+    <item android:id="@+id/G"
+        android:title="@string/tonG" />
+    <item android:id="@+id/G_A"
+        android:title="@string/tonG_A" />
+    <item android:id="@+id/A"
+        android:title="@string/tonA" />
+    <item android:id="@+id/A_B"
+        android:title="@string/tonA_B" />
+    <item android:id="@+id/B"
+        android:title="@string/tonB" />
+</menu>

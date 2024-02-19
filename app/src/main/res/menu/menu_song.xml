@@ -11,5 +11,5 @@
         android:icon="@drawable/ic_heart"
         app:showAsAction="ifRoom"
         android:onClick="addToFavorites"
-        android:title="@string/favorit" />
+        android:title="@string/favorite" />
 </menu>

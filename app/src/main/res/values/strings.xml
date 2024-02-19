@@ -1,53 +1,50 @@
 <resources>
     <string name="app_name" translatable="false">WorshipList</string>
     <string name="helper_text">Название песни</string>
-    <string name="text"
-    >1 куплет:
-В глубины вод меня призвал Ты
-Мне не пройти их без Тебя
-Но вера крепнет в океанах
-Там явишь мне, Господь, Себя
+    <string name="favorite">Favorite</string>
+    <string name="chords">Аккорды</string>
+    <string name="tonC">C</string>
+    <string name="tonC_D">C#</string>
+    <string name="tonD">D</string>
+    <string name="tonD_E">D#</string>
+    <string name="tonE">E</string>
+    <string name="tonF">F</string>
+    <string name="tonF_G">F#</string>
+    <string name="tonG">G</string>
+    <string name="tonG_A">G#</string>
+    <string name="tonA">A</string>
+    <string name="tonA_B">Bb</string>
+    <string name="tonB">B</string>
+    <string name="settings">Настройки</string>
+    <string name="default_text_size">14</string>
+    <string name="text_size">Размер текста</string>
+    <string name="transpose">Транспонирование</string>
+    <string name="capo">Capo</string>
+    
+    <string-array name="keys">
+        <item>C</item>
+        <item>C#</item>
+        <item>D</item>
+        <item>D#</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>G#</item>
+        <item>A</item>
+        <item>Bb</item>
+        <item>B</item>
+    </string-array>
 
-Припев:
-Я имя, Бог, Твоё зову
-И взгляд я с волн на Тебя смещу
-Душе моей Ты дашь покой во время бурь
-Ведь я в Тебе, а Ты во мне
-
-2 куплет:
-В пучинах больше благодати
-Рукой Своей меня спасешь
-Где страх объял и нет опоры
-Ты не подводил и не подведешь
-
-Припев:
-Я имя, Бог, Твоё зову
-И взгляд я с волн на Тебя смещу
-Душе моей Ты дашь покой во время бурь
-Ведь я в Тебе, а Ты во мне
-
-1 Бридж:
-Безгранично доверяюсь Духу Бога
-Пусть ведёт меня по водам туда, куда призвал Он
-И в глубинах тех, что не преодолеть мне
-Станет вера моя крепче когда рядом мой Спаситель
-
-2 Бридж:
-Безгранично доверяюсь Духу Бога
-Пусть ведёт меня по водам туда, куда призвал Он
-И в глубинах тех, что не преодолеть мне
-Станет вера моя крепче когда рядом мой Спаситель
-
-3 Бридж:
-Безгранично доверяюсь Духу Бога
-Пусть ведёт меня по водам туда, куда призвал Он
-И в глубинах тех, что не преодолеть мне
-Станет вера моя крепче когда рядом мой Спаситель
-
-Припев:
-Я имя, Бог, Твоё зову
-И взгляд я с волн на Тебя смещу
-Ты дашь покой во время бурь
-Я в Тебе, а Ты во мне</string>
-    <string name="favorit">Favorit</string>
+    <string-array name="capos">
+        <item>capo 10</item>
+        <item>capo 9</item>
+        <item>capo 8</item>
+        <item>capo 7</item>
+        <item>capo 6</item>
+        <item>capo 5</item>
+        <item>capo 4</item>
+        <item>capo 3</item>
+        <item>capo 2</item>
+        <item>capo 1</item>
+    </string-array>
 </resources>

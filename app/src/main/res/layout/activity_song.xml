@@ -1,45 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".SongActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolAppBar"
+            style="@style/Widget.Material3.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:minHeight="?attr/actionBarSize"
             android:background="@color/Primary_100"
-            style="?appBarLayoutStyle"
-            app:title="Славь душа, Господа"
-            app:subtitle="Слово Жизни Music"
-            app:titleTextColor="@color/Primary_1000"
+            android:minHeight="?attr/actionBarSize"
             app:menu="@menu/menu_song"
+            app:navigationIcon="@drawable/rounded_arrow_back_24"
             app:navigationIconTint="@color/Primary_1000"
-            app:navigationIcon="@drawable/rounded_arrow_back_24" />
+            app:subtitle="Слово Жизни Music"
+            app:title="Славь душа, Господа"
+            app:titleTextColor="@color/Primary_1000" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textSong"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/Primary_100"
-                android:padding="16dp"
-                android:text="@string/text"
-                android:textColor="@color/Primary_1000"
-                android:textSize="16sp" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/Primary_100"
+                    android:padding="16dp"
+                    android:textColor="@color/Primary_1000"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/capo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="end"
+                    android:text="Capo 5"
+                    android:textColor="@color/Primary_1000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
 
         </ScrollView>
 
-    </com.google.android.material.appbar.AppBarLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_settings"
+        android:onClick="showSettingsSong"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

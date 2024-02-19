@@ -3,4 +3,5 @@
     <color name="Primary_1000">#FF000000</color>
     <color name="Primary_500">#7D7D7D</color>
     <color name="Primary_100">#FFFFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

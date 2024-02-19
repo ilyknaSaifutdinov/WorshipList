@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="helper_text">Название песни</string>
+    <string name="chords">Аккорды</string>
+    <string name="settings">Настройки</string>
+    <string name="default_text_size">14</string>
+    <string name="text_size">Размер текста</string>
+    <string name="transpose">Транспонирование</string>
+    <string name="capo">Capo</string>
 </resources>
