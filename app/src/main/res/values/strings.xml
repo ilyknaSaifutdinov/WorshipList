@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">WorshipList</string>
+    <string name="app_name" translatable="false">PraiseRoom</string>
     <string name="helper_text">Название песни</string>
     <string name="favorite">Favorite</string>
     <string name="chords">Аккорды</string>
@@ -16,11 +16,135 @@
     <string name="tonA_B">Bb</string>
     <string name="tonB">B</string>
     <string name="settings">Настройки</string>
-    <string name="default_text_size">14</string>
+    <string name="default_text_size">16</string>
     <string name="text_size">Размер текста</string>
     <string name="transpose">Транспонирование</string>
     <string name="capo">Capo</string>
-    
+    <string name="capo_">Capo:</string>
+
+    <string-array name="C_key">
+        <item>Am</item>
+        <item>Dm</item>
+        <item>Em</item>
+        <item>C</item>
+        <item>F</item>
+        <item>G</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="G_key">
+        <item>Em</item>
+        <item>Am</item>
+        <item>Bm</item>
+        <item>C</item>
+        <item>D</item>
+        <item>G</item>
+    </string-array>
+
+    <string-array name="D_key">
+        <item>Bm</item>
+        <item>F#m</item>
+        <item>Em</item>
+        <item>A</item>
+        <item>D</item>
+        <item>G</item>
+    </string-array>
+
+    <string-array name="A_key">
+        <item>F#m</item>
+        <item>Bm</item>
+        <item>C#m</item>
+        <item>A</item>
+        <item>D</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="E_key">
+        <item>C#m</item>
+        <item>G#m</item>
+        <item>F#m</item>
+        <item>A</item>
+        <item>B</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="B_key">
+        <item>G#m</item>
+        <item>F#m</item>
+        <item>C#m</item>
+        <item>A</item>
+        <item>B</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="F_sharp_key">
+        <item>D#m</item>
+        <item>G#m</item>
+        <item>Bbm</item>
+        <item>A#m</item>
+        <item>F#</item>
+        <item>B</item>
+        <item>Db</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="C_sharp_key">
+        <item>Bbm</item>
+        <item>D#m</item>
+        <item>Fm</item>
+        <item>F#</item>
+        <item>Ab</item>
+        <item>G#</item>
+        <item>Db</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="G_sharp_key">
+        <item>Fm</item>
+        <item>Bbm</item>
+        <item>A#m</item>
+        <item>Cm</item>
+        <item>Eb</item>
+        <item>D#</item>
+        <item>Ab</item>
+        <item>G#</item>
+        <item>Db</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="D_sharp_key">
+        <item>Cm</item>
+        <item>Fm</item>
+        <item>Gm</item>
+        <item>Eb</item>
+        <item>D#</item>
+        <item>Ab</item>
+        <item>G#</item>
+        <item>Bb</item>
+        <item>A#</item>
+    </string-array>
+
+    <string-array name="B_flat_key">
+        <item>Gm</item>
+        <item>Dm</item>
+        <item>Cm</item>
+        <item>Eb</item>
+        <item>D#</item>
+        <item>F</item>
+        <item>Bb</item>
+        <item>A#</item>
+    </string-array>
+
+    <string-array name="F_key">
+        <item>Dm</item>
+        <item>Gm</item>
+        <item>Am</item>
+        <item>C</item>
+        <item>F</item>
+        <item>Bb</item>
+        <item>A#</item>
+    </string-array>
+
     <string-array name="keys">
         <item>C</item>
         <item>C#</item>
@@ -36,15 +160,15 @@
     </string-array>
 
     <string-array name="capos">
-        <item>capo 10</item>
-        <item>capo 9</item>
-        <item>capo 8</item>
-        <item>capo 7</item>
-        <item>capo 6</item>
-        <item>capo 5</item>
-        <item>capo 4</item>
-        <item>capo 3</item>
-        <item>capo 2</item>
-        <item>capo 1</item>
+        <item>10</item>
+        <item>9</item>
+        <item>8</item>
+        <item>7</item>
+        <item>6</item>
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
     </string-array>
 </resources>

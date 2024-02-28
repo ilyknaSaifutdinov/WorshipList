@@ -75,9 +75,9 @@ class MainActivity() : AppCompatActivity(), SongsAdapter.OnItemClickListener {
 
                 val existingSong = db.getDao().getSongByName(textName)
 
-                if (existingSong == null) {
-                    songs.add(Song(numberSong, textName, textAuthor, textSong))
-                }
+//                if (existingSong == null) {
+//                    songs.add(Song(numberSong, textName, textAuthor, textSong))
+//                }
             } catch (e: Exception) {
                 Log.e("MainActivity", "Ошибка при получении данных песни.", e)
             }
