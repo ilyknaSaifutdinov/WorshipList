@@ -32,13 +32,22 @@
         <item>E</item>
     </string-array>
 
-    <string-array name="G_key">
-        <item>Em</item>
-        <item>Am</item>
-        <item>Bm</item>
-        <item>C</item>
-        <item>D</item>
-        <item>G</item>
+    <string-array name="C_sharp_key">
+        <item>A#m</item>
+        <item>D#m</item>
+        <item>Fm</item>
+        <item>F#</item>
+        <item>G#</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="D_flat_key">
+        <item>Bbm</item>
+        <item>D#m</item>
+        <item>Fm</item>
+        <item>F#</item>
+        <item>Ab</item>
+        <item>Db</item>
     </string-array>
 
     <string-array name="D_key">
@@ -50,13 +59,22 @@
         <item>G</item>
     </string-array>
 
-    <string-array name="A_key">
-        <item>F#m</item>
-        <item>Bm</item>
-        <item>C#m</item>
-        <item>A</item>
-        <item>D</item>
-        <item>E</item>
+    <string-array name="D_sharp_key">
+        <item>Cm</item>
+        <item>Fm</item>
+        <item>Gm</item>
+        <item>D#</item>
+        <item>G#</item>
+        <item>A#</item>
+    </string-array>
+
+    <string-array name="E_flat_key">
+        <item>Cm</item>
+        <item>Fm</item>
+        <item>Gm</item>
+        <item>Eb</item>
+        <item>Ab</item>
+        <item>Bb</item>
     </string-array>
 
     <string-array name="E_key">
@@ -66,73 +84,6 @@
         <item>A</item>
         <item>B</item>
         <item>E</item>
-    </string-array>
-
-    <string-array name="B_key">
-        <item>G#m</item>
-        <item>F#m</item>
-        <item>C#m</item>
-        <item>A</item>
-        <item>B</item>
-        <item>E</item>
-    </string-array>
-
-    <string-array name="F_sharp_key">
-        <item>D#m</item>
-        <item>G#m</item>
-        <item>Bbm</item>
-        <item>A#m</item>
-        <item>F#</item>
-        <item>B</item>
-        <item>Db</item>
-        <item>C#</item>
-    </string-array>
-
-    <string-array name="C_sharp_key">
-        <item>Bbm</item>
-        <item>D#m</item>
-        <item>Fm</item>
-        <item>F#</item>
-        <item>Ab</item>
-        <item>G#</item>
-        <item>Db</item>
-        <item>C#</item>
-    </string-array>
-
-    <string-array name="G_sharp_key">
-        <item>Fm</item>
-        <item>Bbm</item>
-        <item>A#m</item>
-        <item>Cm</item>
-        <item>Eb</item>
-        <item>D#</item>
-        <item>Ab</item>
-        <item>G#</item>
-        <item>Db</item>
-        <item>C#</item>
-    </string-array>
-
-    <string-array name="D_sharp_key">
-        <item>Cm</item>
-        <item>Fm</item>
-        <item>Gm</item>
-        <item>Eb</item>
-        <item>D#</item>
-        <item>Ab</item>
-        <item>G#</item>
-        <item>Bb</item>
-        <item>A#</item>
-    </string-array>
-
-    <string-array name="B_flat_key">
-        <item>Gm</item>
-        <item>Dm</item>
-        <item>Cm</item>
-        <item>Eb</item>
-        <item>D#</item>
-        <item>F</item>
-        <item>Bb</item>
-        <item>A#</item>
     </string-array>
 
     <string-array name="F_key">
@@ -145,16 +96,102 @@
         <item>A#</item>
     </string-array>
 
+    <string-array name="F_sharp_key">
+        <item>D#m</item>
+        <item>G#m</item>
+        <item>A#m</item>
+        <item>F#</item>
+        <item>B</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="G_flat_key">
+        <item>D#m</item>
+        <item>G#m</item>
+        <item>Bbm</item>
+        <item>F#</item>
+        <item>B</item>
+        <item>Db</item>
+    </string-array>
+
+    <string-array name="G_key">
+        <item>Em</item>
+        <item>Am</item>
+        <item>Bm</item>
+        <item>C</item>
+        <item>D</item>
+        <item>G</item>
+    </string-array>
+
+    <string-array name="G_sharp_key">
+        <item>G#</item>
+        <item>Fm</item>
+        <item>A#m</item>
+        <item>Cm</item>
+        <item>D#</item>
+        <item>C#</item>
+    </string-array>
+
+    <string-array name="A_flat_key">
+        <item>Ab</item>
+        <item>Bbm</item>
+        <item>Fm</item>
+        <item>Cm</item>
+        <item>Eb</item>
+        <item>Db</item>
+    </string-array>
+
+    <string-array name="A_key">
+        <item>F#m</item>
+        <item>Bm</item>
+        <item>C#m</item>
+        <item>A</item>
+        <item>D</item>
+        <item>E</item>
+    </string-array>
+
+    <string-array name="A_sharp_key">
+        <item>Gm</item>
+        <item>Dm</item>
+        <item>Cm</item>
+        <item>D#</item>
+        <item>F</item>
+        <item>A#</item>
+    </string-array>
+
+    <string-array name="B_flat_key">
+        <item>Gm</item>
+        <item>Dm</item>
+        <item>Cm</item>
+        <item>Eb</item>
+        <item>F</item>
+        <item>Bb</item>
+    </string-array>
+
+    <string-array name="B_key">
+        <item>G#m</item>
+        <item>F#m</item>
+        <item>C#m</item>
+        <item>A</item>
+        <item>B</item>
+        <item>E</item>
+    </string-array>
+
     <string-array name="keys">
         <item>C</item>
         <item>C#</item>
         <item>D</item>
         <item>D#</item>
+        <item>Eb</item>
         <item>E</item>
         <item>F</item>
+        <item>F#</item>
+        <item>Gb</item>
         <item>G</item>
         <item>G#</item>
+        <item>Ab</item>
         <item>A</item>
+        <item>A#</item>
         <item>Bb</item>
         <item>B</item>
     </string-array>

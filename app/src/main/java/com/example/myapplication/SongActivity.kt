@@ -17,7 +17,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.myapplication.SongsAdapter.Companion.EXTRA_SONG
@@ -137,8 +136,8 @@ class SongActivity : AppCompatActivity() {
         // Показываю меню тональностей
         val keys = resources.getStringArray(R.array.keys)
         val adapterKeys = ArrayAdapter(this, R.layout.drop_down_item, keys)
-        val autoCompleteTextView = dialog.findViewById<AutoCompleteTextView>(R.id.showKeysTV)
-        autoCompleteTextView.setAdapter(adapterKeys)
+        val showKeysCTV = dialog.findViewById<AutoCompleteTextView>(R.id.showKeysTV)
+        showKeysCTV.setAdapter(adapterKeys)
 
         // Показываю меню капо
         val capos = resources.getStringArray(R.array.capos)
@@ -201,86 +200,75 @@ class SongActivity : AppCompatActivity() {
             saveSwitchStateCapo(isChecked)
         }
 
-        // Реализую транспонирование
-        val transposeTF : TextInputLayout = dialog.findViewById(R.id.transposeTF)
+        // Реализация транспонирования
+
+        // Нахождение аккордов в тексте
+        fun extractChords(text: String): List<String> {
+            val currentChords = Regex("(?<![A-H/])([A-H][b#m]?|m)")
+            return currentChords.findAll(text).map { it.value }.toList()
+        }
 
         // Определение текущей тональности
-        fun determineSongKey(): String {
-            val chordsPattern = Regex("[A-H]")
-            val textSong = textSongTV.text.toString()
-                .replace((chordsPattern)) { "" }
+        fun determineKey(): String {
+            val currentText = textSongTV.text.toString()
+            val foundedChords = extractChords(currentText)
 
-            val noteFrequencies = mutableMapOf<String, Int>()
+            val allKeysSong = mapOf(
+                "C" to resources.getStringArray(R.array.C_key),
+                "C#" to resources.getStringArray(R.array.C_sharp_key),
+                "Db" to resources.getStringArray(R.array.D_flat_key),
+                "D" to resources.getStringArray(R.array.D_key),
+                "D#" to resources.getStringArray(R.array.D_sharp_key),
+                "Eb" to resources.getStringArray(R.array.E_flat_key),
+                "E" to resources.getStringArray(R.array.E_key),
+                "F" to resources.getStringArray(R.array.F_key),
+                "F#" to resources.getStringArray(R.array.F_sharp_key),
+                "Gb" to resources.getStringArray(R.array.G_flat_key),
+                "G" to resources.getStringArray(R.array.G_key),
+                "G#" to resources.getStringArray(R.array.G_sharp_key),
+                "Ab" to resources.getStringArray(R.array.A_key),
+                "A" to resources.getStringArray(R.array.A_key),
+                "A#" to resources.getStringArray(R.array.A_sharp_key),
+                "Bb" to resources.getStringArray(R.array.B_flat_key),
+                "B" to resources.getStringArray(R.array.B_key)
+            )
 
-            for (note in textSong.toLowerCase().filter { it.isLetter() }) {
-                val adjustedNote = when (note) {
-                    'a' -> "a#"
-                    'b' -> "c"
-                    'h' -> "c"
-                    'c' -> "c#"
-                    'd' -> "d#"
-                    'e' -> "f"
-                    'f' -> "f#"
-                    'g' -> "g#"
-                    else -> continue
-                }
-                noteFrequencies[adjustedNote] = noteFrequencies
-                    .getOrDefault(adjustedNote, 0) + 1
-            }
+            var bestMatchPercentage = 0.0
+            var currentKey = ""
 
-            var mostFrequentNote = ""
-            var maxFrequency = 0
-            val mostFrequentNoteChords = mutableListOf<String>()
-            for ((note, frequency) in noteFrequencies) {
-                if (frequency > maxFrequency) {
-                    mostFrequentNote = note
-                    maxFrequency = frequency
-                    mostFrequentNoteChords.clear()
-                    mostFrequentNoteChords.add(note.capitalize())
-                } else if (frequency == maxFrequency) {
-                    mostFrequentNoteChords.add(note.capitalize())
-                }
-            }
+            allKeysSong.forEach { (key, chordsOfKey) ->
+                val totalChordsInKey = chordsOfKey.size.toDouble()
+                val matchingChords = chordsOfKey.count { it in foundedChords }
+                val currentMatchPercentage = (matchingChords / totalChordsInKey) * 100
 
-            fun getKeyChords(key: String): Array<String> {
-                return when (key) {
-                    "C" -> resources.getStringArray(R.array.C_key)
-                    "C#" -> resources.getStringArray(R.array.C_sharp_key)
-                    "D" -> resources.getStringArray(R.array.D_key)
-                    "D#" -> resources.getStringArray(R.array.D_sharp_key)
-                    "E" -> resources.getStringArray(R.array.E_key)
-                    "F" -> resources.getStringArray(R.array.F_key)
-                    "F#" -> resources.getStringArray(R.array.F_sharp_key)
-                    "G" -> resources.getStringArray(R.array.G_key)
-                    "G#" -> resources.getStringArray(R.array.G_sharp_key)
-                    "A" -> resources.getStringArray(R.array.A_key)
-                    "A#" -> resources.getStringArray(R.array.B_flat_key)
-                    "B" -> resources.getStringArray(R.array.B_key)
-                    else -> throw IllegalArgumentException("Invalid key: $key")
+                if (currentMatchPercentage > bestMatchPercentage) {
+                    bestMatchPercentage = currentMatchPercentage
+                    currentKey = key
+                } else if (currentMatchPercentage == bestMatchPercentage) {
+                    if (allKeysSong.values.count { key in it } >
+                        allKeysSong.values.count { currentKey in it }) {
+                        currentKey = key
+                    }
                 }
             }
 
-            val filteredChords = mostFrequentNoteChords.filter { note ->
-                keys.any { key -> isChordInKey(note, getKeyChords(key)) }
-            }
+            return currentKey
+        }
 
-            return if (filteredChords.isNotEmpty()) {
-                mostFrequentNote + " " + filteredChords[0]
-            } else {
-                mostFrequentNote
+        // Установка значения в ACTV
+        val currentTon = determineKey()
+        if (currentTon.isNotEmpty()) {
+            val keyPosition = adapterKeys.getPosition(currentTon)
+            if (keyPosition != -1) {
+                showKeysCTV.setText(currentTon, false)
+                showKeysCTV.listSelection = keyPosition
             }
         }
 
-//        fun transposeSong(song: String, semitones: Int): String {
-//            // Логика транспонирования
-//        }
-
         // Обработка нажатия
-        transposeTF.setOnClickListener {
-            autoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                val selectedTon: String = autoCompleteTextView.adapter
-                    .getItem(position) as String
-            }
+        showKeysCTV.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val selectedTon: String = showKeysCTV.adapter
+                .getItem(position) as String
         }
 
         // Настраиваю увеличение/уменьшение текста
