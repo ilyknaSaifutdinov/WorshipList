@@ -24,12 +24,15 @@ import com.example.myapplication.data.Song
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputLayout
+import java.util.regex.Pattern
+import kotlin.math.abs
 
 const val DEFAULT_TEXT_SIZE = 16
 const val MIN_TEXT_SIZE = 12
 const val MAX_TEXT_SIZE = 20
 const val FIND_ALL_CHORDS = "([A-H]\\d)|([A-H]\\w{3}\\d)|([A-H]\\w{3})|([A-H]|m\\d|b|m)"
 const val FIND_ALL_SPACE = "^\\s{3,}"
+const val FIND_FIRST_CHORD = "\\b[A-H]"
 const val FIND_ALL_CHARTERS = "[~!@#\$%^/|()&*+-]"
 class SongActivity : AppCompatActivity() {
     private lateinit var capoTV : TextView
@@ -81,6 +84,7 @@ class SongActivity : AppCompatActivity() {
             // Удаляю аккорды
             deleteChords()
             textSongTV.textSize = chosenTextSize.toFloat()
+
         } else {
 
             inflateSongActivity()
@@ -211,64 +215,82 @@ class SongActivity : AppCompatActivity() {
         // Определение текущей тональности
         fun determineKey(): String {
             val currentText = textSongTV.text.toString()
-            val foundedChords = extractChords(currentText)
-
-            val allKeysSong = mapOf(
-                "C" to resources.getStringArray(R.array.C_key),
-                "C#" to resources.getStringArray(R.array.C_sharp_key),
-                "Db" to resources.getStringArray(R.array.D_flat_key),
-                "D" to resources.getStringArray(R.array.D_key),
-                "D#" to resources.getStringArray(R.array.D_sharp_key),
-                "Eb" to resources.getStringArray(R.array.E_flat_key),
-                "E" to resources.getStringArray(R.array.E_key),
-                "F" to resources.getStringArray(R.array.F_key),
-                "F#" to resources.getStringArray(R.array.F_sharp_key),
-                "Gb" to resources.getStringArray(R.array.G_flat_key),
-                "G" to resources.getStringArray(R.array.G_key),
-                "G#" to resources.getStringArray(R.array.G_sharp_key),
-                "Ab" to resources.getStringArray(R.array.A_key),
-                "A" to resources.getStringArray(R.array.A_key),
-                "A#" to resources.getStringArray(R.array.A_sharp_key),
-                "Bb" to resources.getStringArray(R.array.B_flat_key),
-                "B" to resources.getStringArray(R.array.B_key)
-            )
-
-            var bestMatchPercentage = 0.0
             var currentKey = ""
 
-            allKeysSong.forEach { (key, chordsOfKey) ->
-                val totalChordsInKey = chordsOfKey.size.toDouble()
-                val matchingChords = chordsOfKey.count { it in foundedChords }
-                val currentMatchPercentage = (matchingChords / totalChordsInKey) * 100
+            val pattern = Pattern.compile(FIND_FIRST_CHORD, Pattern.CASE_INSENSITIVE)
+            val matcher = pattern.matcher(currentText)
 
-                if (currentMatchPercentage > bestMatchPercentage) {
-                    bestMatchPercentage = currentMatchPercentage
-                    currentKey = key
-                } else if (currentMatchPercentage == bestMatchPercentage) {
-                    if (allKeysSong.values.count { key in it } >
-                        allKeysSong.values.count { currentKey in it }) {
-                        currentKey = key
-                    }
-                }
+            if (matcher.find()) {
+                val firstLetter = matcher.group().substring(0, 1)
+                currentKey = firstLetter
             }
 
             return currentKey
         }
 
         // Установка значения в ACTV
-        val currentTon = determineKey()
-        if (currentTon.isNotEmpty()) {
-            val keyPosition = adapterKeys.getPosition(currentTon)
+        val currentKey = determineKey()
+        if (currentKey.isNotEmpty()) {
+            val keyPosition = adapterKeys.getPosition(currentKey)
             if (keyPosition != -1) {
-                showKeysCTV.setText(currentTon, false)
+                showKeysCTV.setText(currentKey, false)
                 showKeysCTV.listSelection = keyPosition
             }
         }
 
+        // Транспонирование одного аккорда на заданный интервал
+        fun transposeChord(chord: String, semitones: Int): String {
+            val baseNote = chord[0]
+            val accidental = when {
+                chord.length == 1 -> ""
+                chord[1] == '#' -> "#"
+                chord[1] == 'b' -> "b"
+                else -> ""
+            }
+            val newBaseNote = (baseNote.code - 'A'.code + semitones) % 12 + 'A'.toInt()
+            val newChord = if (newBaseNote < 'A'.toInt()) {
+                (newBaseNote + 12).toChar() + accidental
+            } else {
+                newBaseNote.toChar() + accidental
+            }
+            return newChord + chord.substring(2)
+        }
+
+        // Функция для получения интервала между двумя тональностями
+        fun getInterval(currentTon: String, newTon: String): Int {
+            val currentKeyIndex = "[A-H]".indexOf(currentTon.toUpperCase())
+            val newKeyIndex = "[A-H]".indexOf(newTon.toUpperCase())
+            return abs(currentKeyIndex - newKeyIndex)
+        }
+
+        // Функция для транспонирования аккордов на выбранную тональность
+        fun transposeChords(chords: List<String>,
+                            currentTon: String,
+                            newTon: String): List<String> {
+            val interval = getInterval(currentTon, newTon)
+            val transposedChords = mutableListOf<String>()
+
+            for (chord in chords) {
+                val newChord = transposeChord(chord, interval)
+                transposedChords.add(newChord)
+            }
+
+            return transposedChords
+        }
+
+        fun setKey(selectedKey: String) {
+            val currentChords = extractChords(textSongTV.text.toString())
+            val newChords = transposeChords(currentChords, currentKey, selectedKey)
+
+            textSongTV.text = textSongTV.text.toString()
+                .replace(Regex(FIND_ALL_CHORDS)) { newChords.toString() }
+        }
+
         // Обработка нажатия
         showKeysCTV.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val selectedTon: String = showKeysCTV.adapter
+            val selectedKey: String = showKeysCTV.adapter
                 .getItem(position) as String
+            setKey(selectedKey)
         }
 
         // Настраиваю увеличение/уменьшение текста
