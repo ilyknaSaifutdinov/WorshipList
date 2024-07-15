@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -24,25 +25,22 @@ import com.example.myapplication.data.Song
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputLayout
-import java.util.regex.Pattern
-import kotlin.math.abs
 
 const val DEFAULT_TEXT_SIZE = 16
 const val MIN_TEXT_SIZE = 12
 const val MAX_TEXT_SIZE = 20
 const val FIND_ALL_CHORDS = "([A-H]\\d)|([A-H]\\w{3}\\d)|([A-H]\\w{3})|([A-H]|m\\d|b|m)"
 const val FIND_ALL_SPACE = "^\\s{3,}"
-const val FIND_FIRST_CHORD = "\\b[A-H]"
 const val FIND_ALL_CHARTERS = "[~!@#\$%^/|()&*+-]"
 class SongActivity : AppCompatActivity() {
-    private lateinit var capoTV : TextView
-    private lateinit var capoFret : TextView
-    private lateinit var textSongTV : TextView
-    private lateinit var song : Song
-    private lateinit var sharedPrefSwitchChords : SharedPreferences
-    private lateinit var sharedPrefTextSize : SharedPreferences
-    private lateinit var sharedPrefSwitchCapo : SharedPreferences
-    private var currentTextSize : Int = DEFAULT_TEXT_SIZE
+    private lateinit var capoTV: TextView
+    private lateinit var capoFret: TextView
+    private lateinit var textSongTV: TextView
+    private lateinit var song: Song
+    private lateinit var sharedPrefSwitchChords: SharedPreferences
+    private lateinit var sharedPrefTextSize: SharedPreferences
+    private lateinit var sharedPrefSwitchCapo: SharedPreferences
+    private var currentTextSize: Int = DEFAULT_TEXT_SIZE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song)
@@ -70,7 +68,7 @@ class SongActivity : AppCompatActivity() {
         val chosenTextSize = sharedPrefTextSize
             .getInt("currentTextSize", currentTextSize)
 
-        // Беру установленный размер текста как фильтр
+        // Ставлю Switch в нужное состояние
         sharedPrefSwitchChords =
             getSharedPreferences("PrefSwitchChords", Context.MODE_PRIVATE)
         val chordsIsNotChosen = sharedPrefSwitchChords
@@ -119,10 +117,6 @@ class SongActivity : AppCompatActivity() {
             .replace(Regex(FIND_ALL_SPACE)) { "" }
     }
 
-    private fun isChordInKey(chord: String, keyChords: Array<String>): Boolean {
-        return keyChords.contains(chord)
-    }
-
     private fun dialog() {
         // Отображаю настройки песни
         val dialog = Dialog(this)
@@ -137,12 +131,6 @@ class SongActivity : AppCompatActivity() {
         dialog.window?.setGravity(Gravity.BOTTOM)
         dialog.show()
 
-        // Показываю меню тональностей
-        val keys = resources.getStringArray(R.array.keys)
-        val adapterKeys = ArrayAdapter(this, R.layout.drop_down_item, keys)
-        val showKeysCTV = dialog.findViewById<AutoCompleteTextView>(R.id.showKeysTV)
-        showKeysCTV.setAdapter(adapterKeys)
-
         // Показываю меню капо
         val capos = resources.getStringArray(R.array.capos)
         val adapterCapos = ArrayAdapter(this, R.layout.drop_down_item, capos)
@@ -150,12 +138,12 @@ class SongActivity : AppCompatActivity() {
         showCaposTV.setAdapter(adapterCapos)
 
         // Включаю аккорды по умолчанию
-        val switchChords : SwitchMaterial = dialog.findViewById(R.id.switchChords)
+        val switchChords: SwitchMaterial = dialog.findViewById(R.id.switchChords)
         switchChords.isChecked = sharedPrefSwitchChords
             .getBoolean("switch_state_chords", true)
 
         // Сохраняю состояние switch для аккордов
-        fun saveSwitchStateChords(isChecked: Boolean){
+        fun saveSwitchStateChords(isChecked: Boolean) {
             val editor = sharedPrefSwitchChords.edit()
             editor.putBoolean("switch_state_chords", isChecked)
             editor.apply()
@@ -175,8 +163,8 @@ class SongActivity : AppCompatActivity() {
         }
 
         // Настраиваю логику каподастра
-        val capoTIL : TextInputLayout = dialog.findViewById(R.id.capoTIL)
-        val switchCapo : SwitchMaterial = dialog.findViewById(R.id.switchCapo)
+        val capoTIL: TextInputLayout = dialog.findViewById(R.id.capoTIL)
+        val switchCapo: SwitchMaterial = dialog.findViewById(R.id.switchCapo)
         switchCapo.isChecked = sharedPrefSwitchCapo
             .getBoolean("switch_state_capo", false)
 
@@ -190,11 +178,12 @@ class SongActivity : AppCompatActivity() {
         switchCapo.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 capoTV.isVisible = true
-                showCaposTV.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                    val selectedCapo : String = showCaposTV.adapter
-                        .getItem(position) as String
-                    capoFret.text = selectedCapo
-                }
+                showCaposTV.onItemClickListener =
+                    AdapterView.OnItemClickListener { _, _, position, _ ->
+                        val selectedCapo: String = showCaposTV.adapter
+                            .getItem(position) as String
+                        capoFret.text = selectedCapo
+                    }
             } else {
                 showCaposTV.onItemClickListener = null
                 capoTV.isVisible = false
@@ -204,138 +193,144 @@ class SongActivity : AppCompatActivity() {
             saveSwitchStateCapo(isChecked)
         }
 
-        // Реализация транспонирования
+        // Реализую транспонирование
+
+        val increasingKB: ImageButton = dialog.findViewById(R.id.increasingKeyButton)
+        val decreasingKB: ImageButton = dialog.findViewById(R.id.decreasingKeyButton)
 
         // Нахождение аккордов в тексте
         fun extractChords(text: String): List<String> {
-            val currentChords = Regex("(?<![A-H/])([A-H][b#m]?|m)")
+            val currentChords = Regex("(?<![A-H])([A-H][b#])")
             return currentChords.findAll(text).map { it.value }.toList()
         }
 
-        // Определение текущей тональности
-        fun determineKey(): String {
-            val currentText = textSongTV.text.toString()
-            var currentKey = ""
-
-            val pattern = Pattern.compile(FIND_FIRST_CHORD, Pattern.CASE_INSENSITIVE)
-            val matcher = pattern.matcher(currentText)
-
-            if (matcher.find()) {
-                val firstLetter = matcher.group().substring(0, 1)
-                currentKey = firstLetter
-            }
-
-            return currentKey
-        }
-
-        // Установка значения в ACTV
-        val currentKey = determineKey()
-        if (currentKey.isNotEmpty()) {
-            val keyPosition = adapterKeys.getPosition(currentKey)
-            if (keyPosition != -1) {
-                showKeysCTV.setText(currentKey, false)
-                showKeysCTV.listSelection = keyPosition
-            }
-        }
-
-        // Транспонирование одного аккорда на заданный интервал
-        fun transposeChord(chord: String, semitones: Int): String {
-            val baseNote = chord[0]
-            val accidental = when {
-                chord.length == 1 -> ""
-                chord[1] == '#' -> "#"
-                chord[1] == 'b' -> "b"
-                else -> ""
-            }
-            val newBaseNote = (baseNote.code - 'A'.code + semitones) % 12 + 'A'.toInt()
-            val newChord = if (newBaseNote < 'A'.toInt()) {
-                (newBaseNote + 12).toChar() + accidental
-            } else {
-                newBaseNote.toChar() + accidental
-            }
-            return newChord + chord.substring(2)
-        }
-
-        // Функция для получения интервала между двумя тональностями
-        fun getInterval(currentTon: String, newTon: String): Int {
-            val currentKeyIndex = "[A-H]".indexOf(currentTon.toUpperCase())
-            val newKeyIndex = "[A-H]".indexOf(newTon.toUpperCase())
-            return abs(currentKeyIndex - newKeyIndex)
-        }
-
-        // Функция для транспонирования аккордов на выбранную тональность
-        fun transposeChords(chords: List<String>,
-                            currentTon: String,
-                            newTon: String): List<String> {
-            val interval = getInterval(currentTon, newTon)
+        decreasingKB.setOnClickListener {
+            val currentChords = extractChords(textSongTV.text.toString()).toMutableList()
             val transposedChords = mutableListOf<String>()
 
-            for (chord in chords) {
-                val newChord = transposeChord(chord, interval)
-                transposedChords.add(newChord)
+            currentChords.forEach { oldChord ->
+                when (oldChord) {
+                    "C" -> transposedChords.add("H")
+                    "C#" -> transposedChords.add("C")
+                    "Db" -> transposedChords.add("C")
+                    "D" -> transposedChords.add("C#")
+                    "D#" -> transposedChords.add("D")
+                    "E" -> transposedChords.add("D#")
+                    "F" -> transposedChords.add("E")
+                    "F#" -> transposedChords.add("F")
+                    "Gb" -> transposedChords.add("F")
+                    "G" -> transposedChords.add("F#")
+                    "G#" -> transposedChords.add("G")
+                    "A" -> transposedChords.add("G#")
+                    "Ab" -> transposedChords.add("G")
+                    "A#" -> transposedChords.add("A")
+                    "H" -> transposedChords.add("A#")
+                }
             }
 
-            return transposedChords
-        }
-
-        fun setKey(selectedKey: String) {
-            val currentChords = extractChords(textSongTV.text.toString())
-            val newChords = transposeChords(currentChords, currentKey, selectedKey)
-
-            textSongTV.text = textSongTV.text.toString()
-                .replace(Regex(FIND_ALL_CHORDS)) { newChords.toString() }
-        }
-
-        // Обработка нажатия
-        showKeysCTV.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val selectedKey: String = showKeysCTV.adapter
-                .getItem(position) as String
-            setKey(selectedKey)
-        }
-
-        // Настраиваю увеличение/уменьшение текста
-        val increasingIB: ImageButton = dialog.findViewById(R.id.increasingTextButton)
-        val decreasingIB: ImageButton = dialog.findViewById(R.id.decreasingTextButton)
-        val textSizeTV: TextView = dialog.findViewById(R.id.textSizeTV)
-
-        currentTextSize = sharedPrefTextSize
-            .getInt("currentTextSize", currentTextSize)
-        textSongTV.textSize = currentTextSize.toFloat()
-        textSizeTV.text = currentTextSize.toString()
-
-        // Сохраняю размер текста
-        fun saveCurrentTextSize(currentTextSize: Int) {
-            val editor = sharedPrefTextSize.edit()
-            editor.putInt("currentTextSize", currentTextSize)
-            editor.apply()
-        }
-
-        increasingIB.setOnClickListener {
-            if (currentTextSize == MAX_TEXT_SIZE) {
-                Toast.makeText(
-                    this, "Это максимальный размер текста",
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (currentChords.size == transposedChords.size) {
+                for (index in currentChords.indices) {
+                    val chordRegex = Regex("\\b${currentChords[index]}\\b")
+                    textSongTV.text =
+                        textSongTV.text.replace(chordRegex, transposedChords[index])
+                }
             } else {
-                currentTextSize++
-                textSizeTV.text = currentTextSize.toString()
-                textSongTV.textSize = currentTextSize.toFloat()
-                saveCurrentTextSize(currentTextSize)
+                Toast.makeText(
+                    this,
+                    "Упс... Ошибка при транспонировании",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        }
 
-        decreasingIB.setOnClickListener {
-            if (currentTextSize == MIN_TEXT_SIZE) {
-                Toast.makeText(
-                    this, "Это минимальный размер текста",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                currentTextSize--
-                textSizeTV.text = currentTextSize.toString()
-                textSongTV.textSize = currentTextSize.toFloat()
-                saveCurrentTextSize(currentTextSize)
+                transposedChords.clear()
+                currentChords.clear()
+            }
+
+            increasingKB.setOnClickListener {
+                val currentChords = extractChords(textSongTV.text.toString()).toMutableList()
+                val transposedChords = mutableListOf<String>()
+
+                currentChords.forEach { oldChord ->
+                    when (oldChord) {
+                        "C" -> transposedChords.add("C#")
+                        "C#" -> transposedChords.add("D")
+                        "Db" -> transposedChords.add("D")
+                        "D" -> transposedChords.add("D#")
+                        "D#" -> transposedChords.add("E")
+                        "E" -> transposedChords.add("F")
+                        "F" -> transposedChords.add("F#")
+                        "F#" -> transposedChords.add("G")
+                        "Gb" -> transposedChords.add("G")
+                        "G" -> transposedChords.add("G#")
+                        "G#" -> transposedChords.add("A")
+                        "A" -> transposedChords.add("A#")
+                        "Ab" -> transposedChords.add("A")
+                        "A#" -> transposedChords.add("H")
+                        "H" -> transposedChords.add("C")
+                    }
+                }
+
+                if (currentChords.size == transposedChords.size) {
+                    for (index in currentChords.indices) {
+                        val chordRegex = Regex("\\b${currentChords[index]}\\b")
+                        textSongTV.text =
+                            textSongTV.text.replace(chordRegex, transposedChords[index])
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Упс... Ошибка при транспонировании",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                transposedChords.clear()
+                currentChords.clear()
+            }
+
+            // Настраиваю увеличение/уменьшение текста
+            val increasingIB: ImageButton = dialog.findViewById(R.id.increasingTextButton)
+            val decreasingIB: ImageButton = dialog.findViewById(R.id.decreasingTextButton)
+            val textSizeTV: TextView = dialog.findViewById(R.id.textSizeTV)
+
+            currentTextSize = sharedPrefTextSize
+                .getInt("currentTextSize", currentTextSize)
+            textSongTV.textSize = currentTextSize.toFloat()
+            textSizeTV.text = currentTextSize.toString()
+
+            // Сохраняю размер текста
+            fun saveCurrentTextSize(currentTextSize: Int) {
+                val editor = sharedPrefTextSize.edit()
+                editor.putInt("currentTextSize", currentTextSize)
+                editor.apply()
+            }
+
+            increasingIB.setOnClickListener {
+                if (currentTextSize == MAX_TEXT_SIZE) {
+                    Toast.makeText(
+                        this, "Это максимальный размер текста",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    currentTextSize++
+                    textSizeTV.text = currentTextSize.toString()
+                    textSongTV.textSize = currentTextSize.toFloat()
+                    saveCurrentTextSize(currentTextSize)
+                }
+            }
+
+            decreasingIB.setOnClickListener {
+                if (currentTextSize == MIN_TEXT_SIZE) {
+                    Toast.makeText(
+                        this, "Это минимальный размер текста",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    currentTextSize--
+                    textSizeTV.text = currentTextSize.toString()
+                    textSongTV.textSize = currentTextSize.toFloat()
+                    saveCurrentTextSize(currentTextSize)
+                }
             }
         }
     }
-}
