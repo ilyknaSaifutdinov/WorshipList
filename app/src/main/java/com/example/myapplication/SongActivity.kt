@@ -32,6 +32,7 @@ const val MAX_TEXT_SIZE = 20
 const val FIND_ALL_CHORDS = "([A-H]\\d)|([A-H]\\w{3}\\d)|([A-H]\\w{3})|([A-H]|m\\d|b|m)"
 const val FIND_ALL_SPACE = "^\\s{3,}"
 const val FIND_ALL_CHARTERS = "[~!@#\$%^/|()&*+-]"
+
 class SongActivity : AppCompatActivity() {
     private lateinit var capoTV: TextView
     private lateinit var capoFret: TextView
@@ -41,6 +42,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var sharedPrefTextSize: SharedPreferences
     private lateinit var sharedPrefSwitchCapo: SharedPreferences
     private var currentTextSize: Int = DEFAULT_TEXT_SIZE
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song)
@@ -60,7 +62,7 @@ class SongActivity : AppCompatActivity() {
         }
 
         sharedPrefSwitchCapo =
-            getSharedPreferences("PrefSwitchCapo", MODE_PRIVATE)
+            getSharedPreferences("PrefSwitchCapo", Context.MODE_PRIVATE)
 
         // Беру установленный размер текста как фильтр
         sharedPrefTextSize =
@@ -163,7 +165,7 @@ class SongActivity : AppCompatActivity() {
         }
 
         // Настраиваю логику каподастра
-        val capoTIL: TextInputLayout = dialog.findViewById(R.id.capoTIL)
+        //val capoTIL: TextInputLayout = dialog.findViewById(R.id.capoTIL)
         val switchCapo: SwitchMaterial = dialog.findViewById(R.id.switchCapo)
         switchCapo.isChecked = sharedPrefSwitchCapo
             .getBoolean("switch_state_capo", false)
@@ -197,10 +199,12 @@ class SongActivity : AppCompatActivity() {
 
         val increasingKB: ImageButton = dialog.findViewById(R.id.increasingKeyButton)
         val decreasingKB: ImageButton = dialog.findViewById(R.id.decreasingKeyButton)
+        val tonTV: TextView = dialog.findViewById(R.id.textTonTV)
+        var displayTon = 0
 
         // Нахождение аккордов в тексте
         fun extractChords(text: String): List<String> {
-            val currentChords = Regex("(?<![A-H])([A-H][b#])")
+            val currentChords = """\(?[A-H](#|b)?(m|maj|min|dim|aug|sus|add)?\d*(maj7|m7|7|9|11|13)?(sus2|sus4|add9)?(\/[A-G](#|b)?)?\)?""".toRegex()
             return currentChords.findAll(text).map { it.value }.toList()
         }
 
@@ -208,9 +212,9 @@ class SongActivity : AppCompatActivity() {
             val currentChords = extractChords(textSongTV.text.toString()).toMutableList()
             val transposedChords = mutableListOf<String>()
 
-            currentChords.forEach { oldChord ->
-                when (oldChord) {
-                    "C" -> transposedChords.add("H")
+            currentChords.forEach { currentChord ->
+                when (currentChord) {
+                    "C" -> transposedChords.add("B")
                     "C#" -> transposedChords.add("C")
                     "Db" -> transposedChords.add("C")
                     "D" -> transposedChords.add("C#")
@@ -225,15 +229,24 @@ class SongActivity : AppCompatActivity() {
                     "Ab" -> transposedChords.add("G")
                     "A#" -> transposedChords.add("A")
                     "H" -> transposedChords.add("A#")
+                    "B" -> transposedChords.add("A#")
+                    else -> transposedChords.add(currentChord)
                 }
             }
 
             if (currentChords.size == transposedChords.size) {
+                var newText = textSongTV.text.toString()
+
                 for (index in currentChords.indices) {
-                    val chordRegex = Regex("\\b${currentChords[index]}\\b")
-                    textSongTV.text =
-                        textSongTV.text.replace(chordRegex, transposedChords[index])
+                    val escapedChord = Regex.escape(currentChords[index])
+                    val chordRegex = Regex("\\b$escapedChord\\b")
+                    newText = chordRegex.replace(newText, transposedChords[index])
                 }
+                textSongTV.text = newText
+
+                --displayTon
+                tonTV.text = displayTon.toString()
+                newText = ""
             } else {
                 Toast.makeText(
                     this,
@@ -241,7 +254,6 @@ class SongActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-
                 transposedChords.clear()
                 currentChords.clear()
             }
@@ -250,8 +262,8 @@ class SongActivity : AppCompatActivity() {
                 val currentChords = extractChords(textSongTV.text.toString()).toMutableList()
                 val transposedChords = mutableListOf<String>()
 
-                currentChords.forEach { oldChord ->
-                    when (oldChord) {
+                currentChords.forEach { currentChord ->
+                    when (currentChord) {
                         "C" -> transposedChords.add("C#")
                         "C#" -> transposedChords.add("D")
                         "Db" -> transposedChords.add("D")
@@ -265,17 +277,25 @@ class SongActivity : AppCompatActivity() {
                         "G#" -> transposedChords.add("A")
                         "A" -> transposedChords.add("A#")
                         "Ab" -> transposedChords.add("A")
-                        "A#" -> transposedChords.add("H")
+                        "A#" -> transposedChords.add("B")
                         "H" -> transposedChords.add("C")
+                        else -> transposedChords.add(currentChord)
                     }
                 }
 
                 if (currentChords.size == transposedChords.size) {
+                    var newText = textSongTV.text.toString()
+
                     for (index in currentChords.indices) {
-                        val chordRegex = Regex("\\b${currentChords[index]}\\b")
-                        textSongTV.text =
-                            textSongTV.text.replace(chordRegex, transposedChords[index])
+                        val escapedChord = Regex.escape(currentChords[index])
+                        val chordRegex = Regex("\\b$escapedChord\\b")
+                        newText = chordRegex.replace(newText, transposedChords[index])
                     }
+                    textSongTV.text = newText
+
+                    ++displayTon
+                    tonTV.text = displayTon.toString()
+                    newText = ""
                 } else {
                     Toast.makeText(
                         this,

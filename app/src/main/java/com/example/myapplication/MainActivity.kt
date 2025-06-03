@@ -1,16 +1,12 @@
 package com.example.myapplication
 
 import android.content.Intent
-import android.media.RouteListingPreference.Item
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.myapplication.SongsAdapter.Companion.EXTRA_SONG
 import com.example.myapplication.data.Song
-import com.example.myapplication.data.SongDB
 import com.example.myapplication.data.SongDB.Companion.createDataBase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
